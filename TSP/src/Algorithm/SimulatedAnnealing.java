@@ -18,16 +18,12 @@ public class SimulatedAnnealing {
     private long seed;
     private Random generator;
 
-    // Best known solution for given problem
-    private int bestKnown;
-
-    public SimulatedAnnealing(double temp, double coolingRate, long seed, int bestKnown) {
+    public SimulatedAnnealing(double temp, double coolingRate, long seed) {
         this.temp = temp;
         this.restartTemp = temp;
         this.coolingRate = coolingRate;
         this.seed = seed;
         generator = new Random(seed);
-        this.bestKnown = bestKnown;
     }
 
     // Calculate the acceptance probability
@@ -94,6 +90,7 @@ public class SimulatedAnnealing {
 
         // Set current solution as best
         Tour best = new Tour(tour.getTour(), tour.getAdjacencyMatrix());
+        int bestKnown = tour.getBestKnown();
         int currentLength = 0, newLength = 0;
         int iteration = 0;
         TwoOpt twoOpt = new TwoOpt(startTime);

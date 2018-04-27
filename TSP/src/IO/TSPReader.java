@@ -14,6 +14,7 @@ public class TSPReader {
     private String path;
     private List<Node> nodes;
     private int bestKnown;
+    private int length;
 
     public TSPReader(String path){
         this.path = path;
@@ -46,6 +47,9 @@ public class TSPReader {
                 switch (str) {
                     case "NAME":
                         name = strings[2];
+                        break;
+                    case "LENGTH":
+                        length = Integer.parseInt(strings[2]);
                         break;
                     case "BEST_KNOWN":
                         bestKnown = Integer.parseInt(strings[2]);
@@ -111,5 +115,13 @@ public class TSPReader {
 
     public void setBestKnown(int bestKnown) {
         this.bestKnown = bestKnown;
+    }
+
+    public int getLength() {
+        return length;
+    }
+
+    public void setLength(int length) {
+        this.length = length;
     }
 }

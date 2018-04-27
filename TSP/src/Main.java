@@ -11,64 +11,78 @@ public class Main {
 
     public static void main(String[] args) {
 
-        String[] files = {"../ALGO_cup_2018_problems/ch130.tsp",
-                "../ALGO_cup_2018_problems/d198.tsp",
-                "../ALGO_cup_2018_problems/eil76.tsp",
-                "../ALGO_cup_2018_problems/fl1577.tsp",
-                "../ALGO_cup_2018_problems/kroA100.tsp",
-                "../ALGO_cup_2018_problems/lin318.tsp",
-                "../ALGO_cup_2018_problems/pcb442.tsp",
-                "../ALGO_cup_2018_problems/pr439.tsp",
-                "../ALGO_cup_2018_problems/rat783.tsp",
-                "../ALGO_cup_2018_problems/u1060.tsp"};
+        String[] files ={"../ALGO_cup_2018_problems/ch130",
+                "../ALGO_cup_2018_problems/d198",
+                "../ALGO_cup_2018_problems/eil76",
+                "../ALGO_cup_2018_problems/fl1577",
+                "../ALGO_cup_2018_problems/kroA100",
+                "../ALGO_cup_2018_problems/lin318",
+                "../ALGO_cup_2018_problems/pcb442",
+                "../ALGO_cup_2018_problems/pr439",
+                "../ALGO_cup_2018_problems/rat783",
+                "../ALGO_cup_2018_problems/u1060"};
 
         TSPWriter writer = new TSPWriter();
         Random random = new Random();
 
-        int[] best = {6110, 15781, 538, 23964, 21282, 42230, 51293, 107217, 9282, 239070}; // Best before seeding
+        int[] best = new int[10];
         int[] newBest = new int[10];
 
-        for(int i=0; i<files.length; i++) {
-
-            double startTime = System.currentTimeMillis();
-
-            TSPReader reader = new TSPReader(files[i]);
+        // Read the current best from solutions
+        for(int i=0; i<best.length; i++){
+            TSPReader reader = new TSPReader(files[i] + ".opt.tour");
             reader.read();
-            List<Node> nodes = reader.getNodes();
+            best[i] = reader.getLength();
+        }
 
-            if(best[i] < (reader.getBestKnown() + (1.0/100.0*reader.getBestKnown()))){
-                System.out.println(reader.getName() + " skipped");
-                continue;
+        // Seeding
+        for(;;) {
+            for (int i = 0; i < files.length; i++) {
+
+                double startTime = System.currentTimeMillis();
+
+                TSPReader reader = new TSPReader(files[i] + ".tsp");
+                reader.read();
+                List<Node> nodes = reader.getNodes();
+
+
+                if (best[i] < (reader.getBestKnown() + (0.8 / 100.0 * reader.getBestKnown()))) {
+                    System.out.println(reader.getName() + " skipped");
+                    System.out.println();
+                    continue;
+                }
+
+                Tour tour = new Tour(nodes);
+                tour.setBestKnown(reader.getBestKnown());
+                System.out.println(reader.getName());
+                System.out.println("Best known: " + tour.getBestKnown());
+                int temp = (int) (Math.random() * 1900) + 100;
+                double coolingRate = (Math.random() * 0.499) + 0.5;
+                long seed = random.nextLong();
+                System.out.println("Temperature: " + temp);
+                System.out.println("Cooling Rate: " + coolingRate);
+                System.out.println("Seed: " + seed);
+
+                SimulatedAnnealing simulatedAnnealing = new SimulatedAnnealing(temp, coolingRate, seed);
+
+                tour = simulatedAnnealing.apply(tour, startTime);
+
+                newBest[i] = tour.getTourLength();
+
+                if (newBest[i] <= best[i]) {
+                    System.out.println("New best for " + reader.getName());
+                    writer.write(files[i] + ".opt.tour",
+                            tour,
+                            simulatedAnnealing.getRestartTemp(),
+                            simulatedAnnealing.getCoolingRate(),
+                            simulatedAnnealing.getSeed());
+                    best[i] = newBest[i];
+                }
+
+                System.out.println("Time for " + reader.getName() + ": " + (System.currentTimeMillis() - startTime) / 1000 + "s");
+                System.out.println();
+
             }
-
-            Tour tour = new Tour(nodes);
-            System.out.println(reader.getName());
-            int temp = (int) (Math.random()*1900) + 100;
-            double coolingRate = (Math.random()*0.495) + 0.5;
-            long seed = random.nextLong();
-            System.out.println("Temperature: " + temp);
-            System.out.println("Cooling Rate: " + coolingRate);
-            System.out.println("Seed: " + seed);
-
-            SimulatedAnnealing simulatedAnnealing = new SimulatedAnnealing(temp, coolingRate, seed, reader.getBestKnown());
-
-            tour = simulatedAnnealing.apply(tour, startTime);
-
-            newBest[i] = tour.getTourLength();
-
-            if(newBest[i] < best[i]){
-                System.out.println("New best for " + reader.getName());
-                writer.write("../ALGO_cup_2018_problems/" + reader.getName() + ".opt.tour",
-                        tour,
-                        simulatedAnnealing.getRestartTemp(),
-                        simulatedAnnealing.getCoolingRate(),
-                        simulatedAnnealing.getSeed());
-                best[i] = newBest[i];
-            }
-
-            System.out.println("Time for " + reader.getName() + ": " + (System.currentTimeMillis() - startTime)/1000 + "s");
-            System.out.println();
-
         }
     }
 

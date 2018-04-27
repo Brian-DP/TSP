@@ -1,9 +1,9 @@
 NAME : eil76.opt.tour
 COMMENT : Solution with NN for eil76.tsp (538)
 PARAMETERS : 
- - Temperature : 500.0
- - Cooling Rate : 0.95
- - Seed : 9694
+ - Temperature : 412.0
+ - Cooling Rate : 0.9811680492649211
+ - Seed : 9073163409867225947
 TYPE : TOUR
 DIMENSION : 76
 LENGTH : 538
@@ -31,8 +31,8 @@ TOUR_SECTION
 76
 26
 67
-34
 46
+34
 52
 27
 45

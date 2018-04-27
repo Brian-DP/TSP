@@ -6,7 +6,7 @@ public class Tour {
 
     private int[] tour;
     private int[][] adjacencyMatrix;
-
+    private int bestKnown;
 
     public Tour(List<Node> list) {
         tour = new int[list.size()];
@@ -83,12 +83,11 @@ public class Tour {
         this.adjacencyMatrix = adjacencyMatrix;
     }
 
-    /*
-    static public Tour copy(Tour tourCopy){
-        Tour tour = new Tour();
-        tour.setTour(tourCopy.getTour());
-        tour.setAdjacencyMatrix(tourCopy.getAdjacencyMatrix());
-        return tour;
+    public int getBestKnown() {
+        return bestKnown;
     }
-    */
+
+    public void setBestKnown(int bestKnown) {
+        this.bestKnown = bestKnown;
+    }
 }

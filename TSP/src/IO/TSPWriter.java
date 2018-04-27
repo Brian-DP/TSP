@@ -45,7 +45,6 @@ public class TSPWriter {
             strToBytes = line.getBytes();
             outputStream.write(strToBytes);
 
-
             line = "TOUR_SECTION" + "\n";
             strToBytes = line.getBytes();
             outputStream.write(strToBytes);
