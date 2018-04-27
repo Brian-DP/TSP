@@ -45,11 +45,7 @@ public class TSPReader {
 
                 switch (str) {
                     case "NAME":
-                        if(strings[1].contains(":")){
-                            name = strings[2];
-                            break;
-                        }
-                        name = strings[1];
+                        name = strings[2];
                         break;
                     case "BEST_KNOWN":
                         bestKnown = Integer.parseInt(strings[2]);

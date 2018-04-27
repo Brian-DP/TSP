@@ -8,11 +8,11 @@ import static java.lang.System.exit;
 
 public class SimulatedAnnealing {
 
-    // Max temp, restarting value
-    private double restartTemp;
-
     // Initial temp
     private double temp;
+
+    // Max temp, restarting value
+    private double restartTemp;
 
     private double coolingRate;
     private long seed;
@@ -20,15 +20,6 @@ public class SimulatedAnnealing {
 
     // Best known solution for given problem
     private int bestKnown;
-
-    public SimulatedAnnealing(int bestKnown){
-        temp = 200;
-        restartTemp = temp;
-        coolingRate = 0.995;
-        seed = 9694;
-        generator = new Random(seed);
-        this.bestKnown = bestKnown;
-    }
 
     public SimulatedAnnealing(double temp, double coolingRate, long seed, int bestKnown) {
         this.temp = temp;
@@ -40,14 +31,14 @@ public class SimulatedAnnealing {
     }
 
     // Calculate the acceptance probability
-    public double acceptanceProbability(int energy, int newEnergy, double temperature) {
+    public double acceptanceProbability(int length, int newLength, double temperature) {
 
-        if(newEnergy < energy){
+        if(newLength < length){
             return 1.0;
         }
 
         // If the new solution is worse, calculate an acceptance probability
-        return Math.exp( (double) -(newEnergy - energy) / temperature);
+        return Math.exp( (double) -(newLength - length) / temperature);
     }
 
     // Double bridge
@@ -68,25 +59,24 @@ public class SimulatedAnnealing {
         int[] oldTour = solution.getTour();
         int[] newTour = new int[oldTour.length];
 
-
         // Double bridge
-        for(int i=0; i <= city1; i++){                //->1
+        for(int i=0; i <= city1; i++){                      //->1
             newTour[placeholder] = oldTour[i];
             placeholder++;
         }
-        for(int i=(city3+1); i <= city4; i++){     //3+1 -> 4
+        for(int i=(city3+1); i <= city4; i++){              //3+1 -> 4
             newTour[placeholder] = oldTour[i];
             placeholder++;
         }
-        for(int i=(city2+1); i <= city3; i++) {    //2+1 -> 3
+        for(int i=(city2+1); i <= city3; i++) {             //2+1 -> 3
             newTour[placeholder] = oldTour[i];
             placeholder++;
         }
-        for(int i=(city1+1); i <= city2; i++) {    //1+1 -> 2
+        for(int i=(city1+1); i <= city2; i++) {             //1+1 -> 2
             newTour[placeholder] = oldTour[i];
             placeholder++;
         }
-        for(int i=city4+1; i < oldTour.length; i++) {    //4 ->
+        for(int i=city4+1; i < oldTour.length; i++) {       //4 ->
             newTour[placeholder] = oldTour[i];
             placeholder++;
         }
@@ -100,8 +90,7 @@ public class SimulatedAnnealing {
         solution.setTour(newTour);
     }
 
-    public Tour apply(Tour tour){
-        double startTime = System.currentTimeMillis();
+    public Tour apply(Tour tour, double startTime){
 
         // Set current solution as best
         Tour best = new Tour(tour.getTour(), tour.getAdjacencyMatrix());
@@ -109,11 +98,9 @@ public class SimulatedAnnealing {
         int iteration = 0;
         TwoOpt twoOpt = new TwoOpt(startTime);
 
-        // Improve the current solution
-        tour = twoOpt.apply(tour);
+        // Loop until time limit or until best known solution is reached
+        while (System.currentTimeMillis() - 178000 < startTime && best.getTourLength() != bestKnown) {
 
-        // Loop until system has cooled
-        while (System.currentTimeMillis() - 175000 < startTime && best.getTourLength() != bestKnown) {
             // Create new solution
             Tour newSolution = new Tour(tour.getTour(), tour.getAdjacencyMatrix());
             perturbation(newSolution);
@@ -133,10 +120,10 @@ public class SimulatedAnnealing {
             // Keep track of the best solution found
             if (tour.getTourLength() < best.getTourLength()) {
                 best = new Tour(tour.getTour(), tour.getAdjacencyMatrix());
-                System.out.println("New best: " + best.getTourLength());
-                System.out.println("Best known: " + bestKnown);
-                System.out.println("Time: " + (System.currentTimeMillis() - startTime)/1000 + "s");
-                System.out.println();
+                //System.out.println("New best: " + best.getTourLength());
+                //System.out.println("Best known: " + bestKnown);
+                //System.out.println("Time: " + (System.currentTimeMillis() - startTime)/1000 + "s");
+                //System.out.println();
             }
 
             // Explore a bit before cooling down
@@ -146,7 +133,7 @@ public class SimulatedAnnealing {
                 iteration = 0;
             }
 
-            // If it cools down before the time runs out, restart the algorithm
+            // If the system cools down before time limit, restart the algorithm
             if(temp < 1){
                 temp = restartTemp;
             }
@@ -179,5 +166,13 @@ public class SimulatedAnnealing {
 
     public void setSeed(long seed) {
         this.seed = seed;
+    }
+
+    public double getRestartTemp() {
+        return restartTemp;
+    }
+
+    public void setRestartTemp(double restartTemp) {
+        this.restartTemp = restartTemp;
     }
 }

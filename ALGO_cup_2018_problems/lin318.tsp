@@ -1,4 +1,4 @@
-NAME: lin318
+NAME : lin318
 TYPE: TSP
 COMMENT: 318-city problem (Lin/Kernighan)
 DIMENSION: 318
