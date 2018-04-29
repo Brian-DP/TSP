@@ -11,16 +11,16 @@ public class Main {
 
     public static void main(String[] args) {
 
-        String[] files ={"../ALGO_cup_2018_problems/ch130",
-                "../ALGO_cup_2018_problems/d198",
-                "../ALGO_cup_2018_problems/eil76",
-                "../ALGO_cup_2018_problems/fl1577",
-                "../ALGO_cup_2018_problems/kroA100",
-                "../ALGO_cup_2018_problems/lin318",
-                "../ALGO_cup_2018_problems/pcb442",
-                "../ALGO_cup_2018_problems/pr439",
-                "../ALGO_cup_2018_problems/rat783",
-                "../ALGO_cup_2018_problems/u1060"};
+        String[] files ={"ALGO_cup_2018_problems/ch130",
+                "ALGO_cup_2018_problems/d198",
+                "ALGO_cup_2018_problems/eil76",
+                "ALGO_cup_2018_problems/fl1577",
+                "ALGO_cup_2018_problems/kroA100",
+                "ALGO_cup_2018_problems/lin318",
+                "ALGO_cup_2018_problems/pcb442",
+                "ALGO_cup_2018_problems/pr439",
+                "ALGO_cup_2018_problems/rat783",
+                "ALGO_cup_2018_problems/u1060"};
 
         TSPWriter writer = new TSPWriter();
         Random random = new Random();
@@ -46,7 +46,7 @@ public class Main {
                 List<Node> nodes = reader.getNodes();
 
 
-                if (best[i] < (reader.getBestKnown() + (0.8 / 100.0 * reader.getBestKnown()))) {
+                if (best[i] == reader.getBestKnown()) {
                     System.out.println(reader.getName() + " skipped");
                     System.out.println();
                     continue;
