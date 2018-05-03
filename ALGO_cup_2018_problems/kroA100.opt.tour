@@ -1,9 +1,9 @@
 NAME : kroA100.opt.tour
 COMMENT : Solution with NN for kroA100.tsp (21282)
 PARAMETERS : 
- - Temperature : 699.0
- - Cooling Rate : 0.6546248514265027
- - Seed : 3737128924271988023
+ - Temperature : 403.0
+ - Cooling Rate : 0.9092247668099126
+ - Seed : -4034163475115195832
 TYPE : TOUR
 DIMENSION : 100
 LENGTH : 21282

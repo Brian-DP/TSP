@@ -1,9 +1,9 @@
 NAME : ch130.opt.tour
 COMMENT : Solution with NN for ch130.tsp (6110)
 PARAMETERS : 
- - Temperature : 839.0
- - Cooling Rate : 0.8025565465074946
- - Seed : 8125914754805177045
+ - Temperature : 496.0
+ - Cooling Rate : 0.763252310528507
+ - Seed : 7442281703859675502
 TYPE : TOUR
 DIMENSION : 130
 LENGTH : 6110

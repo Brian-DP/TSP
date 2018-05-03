@@ -12,19 +12,77 @@ public class TSPReader {
 
     private String name;
     private String path;
+    private String fileName;
     private List<Node> nodes;
     private int bestKnown;
     private int length;
 
-    public TSPReader(String path){
-        this.path = path;
+    private int currentBest;
+    private double temperature;
+    private double coolingRate;
+    private long seed;
+
+    public TSPReader(String fileName){
+        this.fileName = fileName;
+    }
+
+    public void readConfig(){
+        File file = new File("../../../../Config/" + fileName + ".config");
+        FileInputStream fileInputStream = null;
+        BufferedReader bufferedReader = null;
+
+        try {
+            fileInputStream = new FileInputStream(file);
+            bufferedReader = new BufferedReader(new InputStreamReader(fileInputStream));
+
+            String line;
+
+            while ((line = bufferedReader.readLine()) != null) {
+
+                if (line.equals("EOF")) {
+                    break;
+                }
+
+                String[] strings = line.split("\\s+");
+                String str = strings[0];
+
+                switch (str) {
+                    case "BEST":
+                        currentBest = Integer.parseInt(strings[2]);
+                        break;
+                    case "TEMPERATURE":
+                        temperature = Double.parseDouble(strings[2]);
+                        break;
+                    case "COOLING":
+                        coolingRate = Double.parseDouble(strings[2]);
+                        break;
+                    case "SEED":
+                        seed = Long.parseLong(strings[2]);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (fileInputStream != null)
+                    fileInputStream.close();
+                if (bufferedReader != null) {
+                    bufferedReader.close();
+                }
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
     }
 
     public void read() {
 
         nodes = new ArrayList<>();
 
-        File file = new File(path);
+        File file = new File("../../../../Problems/" + fileName + ".tsp");
         FileInputStream fileInputStream = null;
         BufferedReader bufferedReader = null;
 
@@ -123,5 +181,45 @@ public class TSPReader {
 
     public void setLength(int length) {
         this.length = length;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
+    public int getCurrentBest() {
+        return currentBest;
+    }
+
+    public void setCurrentBest(int currentBest) {
+        this.currentBest = currentBest;
+    }
+
+    public double getTemperature() {
+        return temperature;
+    }
+
+    public void setTemperature(double temperature) {
+        this.temperature = temperature;
+    }
+
+    public double getCoolingRate() {
+        return coolingRate;
+    }
+
+    public void setCoolingRate(double coolingRate) {
+        this.coolingRate = coolingRate;
+    }
+
+    public long getSeed() {
+        return seed;
+    }
+
+    public void setSeed(long seed) {
+        this.seed = seed;
     }
 }
