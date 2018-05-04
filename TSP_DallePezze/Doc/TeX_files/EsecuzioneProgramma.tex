@@ -1,0 +1,49 @@
+\chapter*{Esecuzione programma}
+\label{cha_esecuzione}
+
+\section*{Piattaforma}
+\label{sec_piattaforma}
+La piattaforma utilizzata è stato il PC Linux (Ubuntu) fornitoci da Marco Cinus per effettuare i test su una piattaforma comune per caratteristiche.
+
+\section*{Compilazione}
+\label{sec_comp}
+Per compilare il main in modo da generare il file \emph{*.class}, basta semplicemente usare:
+\begin{lstlisting}
+javac nome_classe.java
+\end{lstlisting}
+Per generare il file \emph{*.jar}, invece, il comando è il seguente:
+\begin{lstlisting}
+jar cfm TSPSolver.jar ./META-INF/MANIFEST.MF TSPSolver.class ./Structure 
+./IO ./Algorithm
+\end{lstlisting}
+I parametri dopo "cfm" sono i seguenti:
+\begin{enumerate}
+	\item Nome file jar che si vuole creare
+	\item Manifest che si vuole utilizzare
+	\item Files con cui comporre il jar (inserendo delle directory, i file al loro interno vengono aggiunti ricorsivamente)
+\end{enumerate}
+	
+\section*{Esecuzione}
+\label{sec_exec}
+Nella struttura del progetto sono presente due tipologie di file in aggiunta a quelle richieste nella consegna:
+\begin{itemize}
+	\item \emph{*.claim}: questo tipo di file contiene solo la lunghezza del risultato ottenuto dal mio algoritmo per un dato problema (che da il nome al file). Serve come supporto per lo script di controllo.
+	\item \emph{*.config}: questo tipo di file contiene i parametri con cui configurare l'algoritmo per ogni problema, quindi il seed, la temperatura di partenza e il tasso di raffreddamento.
+\end{itemize}
+Per eseguire il programma è possibile digitare, nella cartella appropriata, due tipi di comando:
+\begin{lstlisting}
+java TSPSolver -c nome_problema
+\end{lstlisting}
+Oppure:
+\begin{lstlisting}
+java TSPSolver -s nome_problema temperatura cooling_rate seed
+\end{lstlisting}
+Dove "-c" esegue l'algoritmo con la configurazione associata al problema, mentre "-s" è il normale solver che richiede i parametri inseriti manualmente. Temperatura e Cooling Rate sono double, mentre il seed è un long. Cooling Rate dev'essere un valore tra 0 e 1 non compresi.
+
+Al termine dell'esecuzione, verrano creati  i file \emph{*.opt.tour} e \emph{*.claim}. Il file \emph{*.config} verrà aggiornato solo se il risultato rappresenta un tour migliore.
+
+Esiste infine un comando per applicare l'algoritmo a tutti i problemi utilizzando parametri generati casualmente:
+\begin{lstlisting}
+java TSPSolver -seed
+\end{lstlisting}
+

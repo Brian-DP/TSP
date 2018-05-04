@@ -22,7 +22,7 @@ public class TwoOpt {
         }
     }
 
-    public Tour apply(Tour tour){   //2-opt "first-best" improvement
+    public Tour apply(Tour tour){   //2-opt "best-first" improvement
         int bestI = 0, bestJ = 0, gain, bestGain = -1, d1, d2;
         while(bestGain < 0 && System.currentTimeMillis() - 175000 < startTime){     //Until it's done or time limit
             bestGain = 0;

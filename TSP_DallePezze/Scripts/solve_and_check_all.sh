@@ -2,7 +2,7 @@
 
 for i in ../Problems/*.tsp; do
 	name="$(basename $i .tsp)"
-	java -jar ../TSPSolver/TSPSolver.jar solve $name
+	java -jar ../TSPSolver/TSPSolver.jar -c $name
 done
 
 

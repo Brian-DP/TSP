@@ -1,0 +1,16 @@
+\chapter*{Soluzioni implementate}
+\label{cha_soluzioni}
+
+\section*{Algoritmo costruttivo}
+\label{sec_costruttivo}
+Come algoritmo costruttivo avevo implementato un semplice \emph{Random} nelle prime fasi di sviluppo, ma ho poi scelto di non usarlo dal momento che peggiorava i miei risultati. Nelle fasi più avanzate del progetto mi sono quindi limitato ad usare l'ordine di lettura delle città come soluzione iniziale.
+
+\section*{Algoritmi di ottimizzazione locale}
+\label{sec_ottimizzazione}
+Come ottimizzazione locale ho inizialmente implementato, un \emph{2-opt Best Improvement}. Su suggerimento di Axel Kuhn (e poi anche del prof. Gambardella) ho apportato una lieve modifica per velocizzarne l'esecuzione, trasformandolo in un \emph{Best-First Improvement}.
+
+\section*{Algoritmi meta-euristici}
+\label{sec_metaeuristici}
+Come meta-euristica ho utilizzato un \emph{Simulated Annealing}. Per sfruttare appieno il limite dei 3 minuti di tempo, quando il sistema si è raffreddato alzo di nuovo la temperatura al massimo per far ricominciare l'algoritmo ed esplorare più soluzioni (tenendo comunque traccia della migliore). 
+
+In diverse applicazioni che ho potuto esaminare, prima di abbassare le temperatura si aspettava una situazione di "equilibrio" in modo da poter mantenere il grado di accettazione delle soluzioni più alto (soprattutto nelle prima fasi). Nel mio caso mi sono limitato ad abbassare la temperatura solo una volta ogni 50 cicli (valore arbitrario determinato durante le procedure di seeding).

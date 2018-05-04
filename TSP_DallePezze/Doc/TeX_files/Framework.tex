@@ -1,0 +1,9 @@
+\chapter*{Scripts}
+\label{cha_scripts}
+
+Per comodità ho deciso di implementare due script in Bash per automatizzare alcuni processi:
+\begin{itemize}
+	\item \emph{create\_jar.sh}: questo script si limita, a partire dal progetto e dal manifest creato da IntelliJ, a generare il file \emph{*.jar}
+	\item \emph{solve\_and\_check\_all.sh}: questo script automatizza il processo di test dell'algoritmo. Utilizzando il file \emph{*.jar}, applica l'algoritmo a tutti i problemi contenuti nella cartella \emph{./Problems} usando i rispettivi file di configurazione (quindi con il comando "-c"). Una volta terminata questa fase, sfrutta il file \emph{*.py} che ci è stato fornito per controllare che tutte le soluzioni generate siano valide.
+\end{itemize}
+Ovviamente questi script funzionano solo ammettendo che la struttura del progetto nel filesystem rimanga inavriata da quella attuale.

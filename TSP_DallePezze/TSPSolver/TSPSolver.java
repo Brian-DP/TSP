@@ -16,15 +16,57 @@ public class TSPSolver {
         startTime = System.currentTimeMillis();
 
         switch(args[0]){
-            case "solve":
+            case "-c":
                 solve(args[1]);
                 break;
-            case "seed":
+            case "-s":
+                solve(args[1], args[2], args[3], args[4]);
+                break;
+            case "-seed":
                 seed();
                 break;
             default:
                 break;
         }
+
+    }
+
+    private static void solve(String filename, String stringTemp, String stringCoolingRate, String stringSeed) {
+
+        TSPWriter writer = new TSPWriter();
+
+        TSPReader reader = new TSPReader(filename);
+        reader.readConfig();
+        reader.read();
+        List<Node> nodes = reader.getNodes();
+
+        Tour tour = new Tour(nodes);
+        tour.setBestKnown(reader.getBestKnown());
+        System.out.println(reader.getName());
+
+        double temp = Double.parseDouble(stringTemp);
+        double coolingRate = Double.parseDouble(stringCoolingRate);
+        long seed = Long.parseLong(stringSeed);
+
+        System.out.println("Temperature: " + temp);
+        System.out.println("Cooling Rate: " + coolingRate);
+        System.out.println("Seed: " + seed);
+
+        SimulatedAnnealing simulatedAnnealing = new SimulatedAnnealing(temp, coolingRate, seed);
+        tour = simulatedAnnealing.apply(tour, startTime);
+
+        writer.write("../Solutions/" + filename + ".opt.tour", tour);
+
+
+        if(tour.getTourLength() < reader.getCurrentBest()) {
+            System.out.println("New best: " + tour.getTourLength());
+            writer.write("../Solutions/" + filename + ".opt.tour", tour);
+            writer.writeConfig(filename, "../Config/" + filename + ".config", tour, temp, coolingRate, seed);
+        }
+
+        System.out.println("Result: " + tour.getTourLength());
+        System.out.println("Time for " + reader.getName() + ": " + (System.currentTimeMillis() - startTime) / 1000 + "s");
+        System.out.println();
 
     }
 
