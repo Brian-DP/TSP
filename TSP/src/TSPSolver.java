@@ -7,7 +7,7 @@ import Structure.Tour;
 
 import java.util.*;
 
-public class Main {
+public class TSPSolver {
 
     static double startTime;
 
@@ -45,16 +45,16 @@ public class Main {
         double coolingRate = reader.getCoolingRate();
         long seed = reader.getSeed();
 
-        SimulatedAnnealing simulatedAnnealing = new SimulatedAnnealing(temp, coolingRate, seed);
+        System.out.println("Temperature: " + temp);
+        System.out.println("Cooling Rate: " + coolingRate);
+        System.out.println("Seed: " + seed);
 
+        SimulatedAnnealing simulatedAnnealing = new SimulatedAnnealing(temp, coolingRate, seed);
         tour = simulatedAnnealing.apply(tour, startTime);
 
+        writer.write("../Solutions/" + filename + ".opt.tour", tour);
 
-        writer.write("../../../../Solutions/" + filename + ".opt.tour", tour);
-
-        System.out.println("Current best: " + reader.getCurrentBest());
         System.out.println("Result: " + tour.getTourLength());
-
         System.out.println("Time for " + reader.getName() + ": " + (System.currentTimeMillis() - startTime) / 1000 + "s");
         System.out.println();
 
@@ -83,7 +83,7 @@ public class Main {
             reader.readConfig();
             reader.read();
 
-            if(reader.getCurrentBest() <= (reader.getBestKnown() + 0.5/100*reader.getBestKnown())){
+            if(reader.getCurrentBest() == reader.getBestKnown()){
                 System.out.println("Skipped");
                 continue;
             }
@@ -106,8 +106,8 @@ public class Main {
 
             if(tour.getTourLength() < reader.getCurrentBest()) {
                 System.out.println("New best: " + tour.getTourLength());
-                writer.write("../../../../Solutions/" + files[i] + ".opt.tour", tour);
-                writer.writeConfig(files[i], "../../../../Config/" + files[i] + ".config", tour, temp, coolingRate, seed);
+                writer.write("../Solutions/" + files[i] + ".opt.tour", tour);
+                writer.writeConfig(files[i], "../Config/" + files[i] + ".config", tour, temp, coolingRate, seed);
             }
 
             System.out.println("Time for " + reader.getName() + ": " + (System.currentTimeMillis() - startTime) / 1000 + "s");

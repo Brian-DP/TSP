@@ -1,13 +1,10 @@
 #!/bin/bash
 
-cd TSP/out/production/TSP/
-
-for i in ../../../../Problems/*.tsp; do
+for i in ./Problems/*.tsp; do
 	name="$(basename $i .tsp)"
-	java Main solve $name
+	java -jar ./TSP/TSP.jar solve $name
 done
 
-cd ../../../../
 
 for i in ./Problems/*.tsp; do
 	name="$(basename $i .tsp)"
